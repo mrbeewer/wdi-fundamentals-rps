@@ -1,11 +1,12 @@
 ////////////////////////////////////////////////
 /*   Provided Code - Please Don't Edit   */
 ////////////////////////////////////////////////
-'use strict';
+//'use strict';
 
 function getInput() {
-    console.log("Please choose either 'rock', 'paper', or 'scissors'.")
-    return prompt();
+    console.log("Please choose either 'rock', 'paper', or 'scissors'.");
+    var answer = prompt();
+    return answer;
 }
 function randomPlay() {
     var randomNumber = Math.random();
@@ -25,6 +26,7 @@ function getPlayerMove(move) {
     // Write an expression that operates on a variable called `move`
     // If a `move` has a value, your expression should evaluate to that value.
     // However, if `move` is not specified / is null, your expression should equal `getInput()`.
+    //console.log(move);
     return move || getInput();
 }
 
@@ -32,6 +34,7 @@ function getComputerMove(move) {
     // Write an expression that operates on a variable called `move`
     // If a `move` has a value, your expression should evaluate to that value.
     // However, if `move` is not specified / is null, your expression should equal `randomPlay()`.
+    console.log(move);
     return move || randomPlay();
 }
 
@@ -50,6 +53,7 @@ function getWinner(playerMove, computerMove) {
                 } else {
                     winner = 'tie';
                 }
+                break;
         case 'scissors':
                 if ( computerMove === 'paper') {
                     winner = 'player';
@@ -58,6 +62,7 @@ function getWinner(playerMove, computerMove) {
                 } else {
                     winner = 'tie';
                 }
+                break;
         case 'paper':
                 if (computerMove === 'rock') {
                     winner = 'player';
@@ -66,6 +71,7 @@ function getWinner(playerMove, computerMove) {
                 } else {
                     winner = 'tie';
                 }
+                break;
         default:
                 winner = null;
                 break;
@@ -81,20 +87,37 @@ function playToFive() {
     // Write code that plays 'Rock, Paper, Scissors' until either the player or the computer has won five times.
     
     var idx = 0;
+    var gameOver = false;
     
-    while (idx < 5) {
-        var winner = getWinner(getPlayerMove(),getComputerMove());
+    while (gameOver === false) {
         
-        if winner === 'player' {
+        // When using repl.it to test, the player prompt tends to freeze on the
+        //   second request. If tested on repl.it with computer vs computer
+        //   the code functions properly. Tested with player input on the
+        //   Codecademy Labs site, it does not freeze on input. After seeing the
+        //   physical prompt display on Codecademy, perhaps repl.it doesn't 
+        //   display prompts?
+        //
+        //var playerMove = getComputerMove();
+        
+        var playerMove = getPlayerMove();
+        var computerMove = getComputerMove();
+        
+        var winner = getWinner(playerMove, computerMove);
+        
+        if (winner === 'player') {
             playerWins += 1;
-        } else if winner === 'computer' {
+        } else if (winner === 'computer') {
             computerWins += 1;
         }
         
-        console.log('Player chose ' + getPlayerMove() + ' while Computer chose ' + getComputerMove());
+        console.log('Player chose ' + playerMove + ' while Computer chose ' + computerMove);
         console.log('The score is currently ' + playerWins + ' to ' + computerWins + '\n');
+        
+        if (playerWins >= 5 || computerWins >= 5) {
+            gameOver = true;
+        }
     }
-    
             
     return [playerWins, computerWins];
 }
