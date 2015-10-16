@@ -22,6 +22,10 @@ function randomPlay() {
 /*           Write Your Code Below            */
 ////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////
+/*               Get Player Move              */
+////////////////////////////////////////////////
 function getPlayerMove(move) {
     // Write an expression that operates on a variable called `move`
     // If a `move` has a value, your expression should evaluate to that value.
@@ -30,6 +34,10 @@ function getPlayerMove(move) {
     return move || getInput();
 }
 
+
+////////////////////////////////////////////////
+/*             Get Computer Move              */
+////////////////////////////////////////////////
 function getComputerMove(move) {
     // Write an expression that operates on a variable called `move`
     // If a `move` has a value, your expression should evaluate to that value.
@@ -38,6 +46,10 @@ function getComputerMove(move) {
     return move || randomPlay();
 }
 
+
+////////////////////////////////////////////////
+/*             Determine Winner               */
+////////////////////////////////////////////////
 function getWinner(playerMove, computerMove) {
     var winner;
     // Write code that will set winner to either 'player', 'computer', or 'tie' 
@@ -87,6 +99,10 @@ function getWinner(playerMove, computerMove) {
     return winner;
 }
 
+
+////////////////////////////////////////////////
+/*             Play to 5 Wins                 */
+////////////////////////////////////////////////
 function playToFive() {
     console.log("Let's play Rock, Paper, Scissors");
     var playerWins = 0;
@@ -130,9 +146,15 @@ function playToFive() {
         }
     }
             
+    console.log('\n\n' + '5 Games Complete!');
+    console.log('\t' + 'Final Score: Player-' + playerWins + '... Computer-' + computerWins);
     return [playerWins, computerWins];
 }
 
+
+////////////////////////////////////////////////
+/*             Play for # Wins                */
+////////////////////////////////////////////////
 function playToNum(num) {
     console.log("Let's play Rock, Paper, Scissors");
     var playerWins = 0;
@@ -175,6 +197,58 @@ function playToNum(num) {
             gameOver = true;
         }
     }
-            
+          
+    console.log('\n\n' + num + ' Games Complete!');
+    console.log('\t' + 'Final Score: Player-' + playerWins + '... Computer-' + computerWins);
     return [playerWins, computerWins];
+}
+
+
+////////////////////////////////////////////////
+/*           Calculate Win Ratio              */
+////////////////////////////////////////////////
+function playCvC(num) {
+    var startTime = Date.now();
+    
+    console.log("Computer vs Computer for " + num + " WINS...");
+    var computer1Wins = 0;
+    var computer2Wins = 0;
+    var idx = 0;
+    var gameOver = false;
+    
+    while (gameOver === false) {
+        
+        idx++; //Total Game Counter
+        
+        var computer1Move = getComputerMove();
+        var computer2Move = getComputerMove();
+        
+        var winner = getWinner(computer1Move, computer2Move);
+        
+        if (winner === 'player') {
+            computer1Wins += 1;
+        } else if (winner === 'computer') {
+            computer2Wins += 1;
+        } else if (winner === 'exit') {
+            return;
+        }
+        
+        if (computer1Wins >= num || computer2Wins >= num) {
+            gameOver = true;
+        }
+    }
+    
+    var endTime = Date.now();
+    var elapsedTime = (endTime - startTime) / 1000;
+    
+    console.log('\t' + idx + ' Games Complete!');
+    console.log('\t' + 'Final Score:');
+    console.log('\t\t' +'[Computer1 -- ' + computer1Wins + '] ... [Computer2 -- ' + computer2Wins +']');
+    var ratio = computer1Wins / idx * 100;
+    console.log('\t\t' + 'Win Ratio(Computer1): ' + 
+        new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 4 }).format(ratio));
+    console.log('\t\t' + 'Test took ' + 
+        new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 4 }).format(elapsedTime) + ' seconds');
+    
+    return [computer1Wins, computer2Wins];
 }
